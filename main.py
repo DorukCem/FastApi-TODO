@@ -23,10 +23,12 @@ def index():
 @app.get("/get-todos")
 
 def get_todos():
+   """ Returns a list of all items in our TODO list """
    return todos
 
 @app.post("/add-todo")
 def add_todo(todo : Item):
+   """ Adds the given item to our list """
    if todo.name in todos:
       raise HTTPException( status_code= status.HTTP_400_BAD_REQUEST, detail=f"Error: Todo '{todo.name}' already exists" )
    todos[todo.name] = todo
@@ -34,6 +36,7 @@ def add_todo(todo : Item):
 
 @app.post("/toggle-todo/{todo}")
 def toggle_todo(todo_name : str):
+   """ Toggles the status of the given todo """
    if todo_name not in todos: 
       raise HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail="Item not found")
    todos[todo_name].is_done = not todos[todo_name].is_done
@@ -41,6 +44,7 @@ def toggle_todo(todo_name : str):
 
 @app.delete("/remove-todo/{todo}")
 def remove_todo(todo_name : str):
+   """ Deletes the given todo """
    if todo_name in todos:
       del todos[todo_name]
       return {"message" : f"Removed {todo_name}"}
