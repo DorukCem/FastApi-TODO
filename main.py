@@ -1,12 +1,18 @@
 # uvicorn main:app --reload
 from fastapi import FastAPI, HTTPException, status
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, validator
 
 app = FastAPI()
 
 class Item(BaseModel):
-   name: str
+   name: str = Field(..., min_length=3, max_length=30)
    is_done: bool | None = False
+
+   @validator('name')
+   def name_must_contain_letters(cls, v):
+      if not any(char.isalpha() for char in v):
+         raise ValueError('Name must contain at least one letter')
+      return v
 
 todos : dict[str , Item] = {}
 
@@ -15,6 +21,7 @@ def index():
    return {"message" : "welcome"}
 
 @app.get("/get-todos")
+
 def get_todos():
    return todos
 
