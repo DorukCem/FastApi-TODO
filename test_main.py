@@ -9,7 +9,7 @@ def test_read_main():
    assert response.json() == {"message": "welcome"}
 
 def test_add_todo():
-   new_todo = {"name": "Test Todo", "is_done": False}
+   new_todo = {"name": "Test Todo"}
    response = client.post("/add-todo", json=new_todo)
    assert response.status_code == 200
    assert response.json() == {"message": "Added todo: Test Todo"}

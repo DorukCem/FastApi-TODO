@@ -5,9 +5,11 @@ from typing import Optional
 
 app = FastAPI()
 
+# TODO: SQL
+
 class Item(BaseModel):
    name: str = Field(..., min_length=3, max_length=30)
-   is_done: bool | None = False
+   is_done: Optional[bool] = False
 
    @field_validator('name')
    @classmethod
