@@ -1,7 +1,7 @@
 # uvicorn main:app --reload
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field, field_validator
-
+from typing import Optional
 
 app = FastAPI()
 
@@ -24,9 +24,9 @@ def index():
 
 @app.get("/get-todos")
 
-def get_todos():
+def get_todos(sort: Optional[bool] = None):
    """ Returns a list of all items in our TODO list """
-   return todos
+   return sorted(todos) if sort else todos
 
 @app.post("/add-todo")
 def add_todo(todo : Item):
