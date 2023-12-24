@@ -1,6 +1,7 @@
 # uvicorn main:app --reload
 from fastapi import FastAPI, HTTPException, status
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
+
 
 app = FastAPI()
 
@@ -8,7 +9,8 @@ class Item(BaseModel):
    name: str = Field(..., min_length=3, max_length=30)
    is_done: bool | None = False
 
-   @validator('name')
+   @field_validator('name')
+   @classmethod
    def name_must_contain_letters(cls, v):
       if not any(char.isalpha() for char in v):
          raise ValueError('Name must contain at least one letter')
