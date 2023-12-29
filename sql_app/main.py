@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, status, Depends
-from typing import Optional
+from typing import Optional,List
 from sqlalchemy.orm import Session
 
 from . import schemas, models
@@ -7,6 +7,8 @@ from .database import engine, SessionLocal
 from .schemas import Item
 
 app = FastAPI()
+
+models.Base.metadata.create_all(engine)
 
 # TODO: SQL
 
@@ -33,7 +35,7 @@ def create_todo(request: schemas.Item, db: Session = Depends(get_db)):
    return new_todo
 
 # TODO maybe sort?
-@app.get("/get-todos")
+@app.get("/get-todos", response_model = List[schemas.ShowItem])
 def get_todos(sort: Optional[bool] = None, db: Session = Depends(get_db)):
    """ Returns a list of all items in our TODO list """
    return db.query(models.Item).all()
@@ -66,3 +68,11 @@ def remove_todo(todo_name : str, db: Session = Depends(get_db)):
    db.commit()
 
    return {"message": "deleted"}
+
+@app.post("/create-user")
+def create_user(request : schemas.User, db: Session = Depends(get_db)):
+   new_user = models.User(name = request.name, email = request.email, password = request.password)
+   db.add(new_user)
+   db.commit()
+   db.refresh(new_user)
+   return new_user

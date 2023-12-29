@@ -11,3 +11,13 @@ class Item(BaseModel):
       if not any(char.isalpha() for char in v):
          raise ValueError('Name must contain at least one letter')
       return v
+
+# This allows me to custmoize my responses
+class ShowItem(Item):
+   class Config():
+      orm_mode = True
+
+class User(BaseModel):
+   name : str
+   email: str
+   password : str
