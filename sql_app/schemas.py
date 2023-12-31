@@ -12,10 +12,6 @@ class Item(BaseModel):
          raise ValueError('Name must contain at least one letter')
       return v
 
-# This allows me to custmoize my responses
-class ShowItem(Item):
-   class Config():
-      orm_mode = True
 
 class User(BaseModel):
    name : str
@@ -29,3 +25,13 @@ class ShowUser(BaseModel):
 
    name : str
    email: str
+
+# This allows me to custmoize my responses
+class ShowItem(Item):
+   name : str
+   is_done : bool
+   creator : ShowUser
+
+   class Config():
+      orm_mode = True
+   

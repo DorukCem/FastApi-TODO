@@ -26,9 +26,9 @@ def index():
    return {"message" : "welcome"}
 
 # TODO unique entries
-@app.post("/create-todo", status_code=status.HTTP_201_CREATED, tags = ['todos'])
+@app.post("/create-todo", response_model = schemas.ShowItem,  status_code=status.HTTP_201_CREATED, tags = ['todos'])
 def create_todo(request: schemas.Item, db: Session = Depends(get_db)):
-   new_todo = models.Item(name = request.name, is_done = request.is_done)
+   new_todo = models.Item(name = request.name, is_done = request.is_done, user_id = 1)
    db.add(new_todo)
    db.commit()
    db.refresh(new_todo)
