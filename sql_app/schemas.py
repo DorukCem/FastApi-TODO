@@ -21,3 +21,11 @@ class User(BaseModel):
    name : str
    email: str
    password : str
+
+class ShowUser(BaseModel): 
+   #Setting orm_mode = True in the Config class allows instances of ShowUser to be used directly with ORM queries
+   class Config():
+      orm_mode = True
+
+   name : str
+   email: str
