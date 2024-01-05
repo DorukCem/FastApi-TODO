@@ -20,4 +20,4 @@ def create_user(request : schemas.User, db: Session = Depends(database.get_db)):
 
 @router.get("/get-users")
 def get_users(db: Session = Depends(database.get_db)):
-   return db.query(models.Item).all()
+   return db.query(models.User).all()
