@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from .. import schemas, database, models
+from .. import schemas, database, models, oauth2
 
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
+
 router = APIRouter(
-   tags= ['todo']
+   tags= ['todo'],
+   dependencies= [Depends(oauth2.get_current_user)]
 ) 
 
 # TODO maybe sort?
